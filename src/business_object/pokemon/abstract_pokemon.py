@@ -1,9 +1,10 @@
 import copy
+from abc import ABC, abstractmethod
 
-from business_object.statistic import Statistic
+from src.business_object.statistic import Statistic
 
 
-class Pokemon:
+class AbstractPokemon(ABC):
     """
     A Pokemon
     """
@@ -13,9 +14,6 @@ class Pokemon:
     # -------------------------------------------------------------------------
 
     def __init__(self, stat_max=None, stat_current=None, level=0, name=None, type_pk=None):
-        # -----------------------------
-        # Attributes
-        # -----------------------------
         self._stat_max: Statistic = stat_max
         self._stat_current: Statistic = stat_current
         self._level: int = level
@@ -26,6 +24,7 @@ class Pokemon:
     # Methods
     # -------------------------------------------------------------------------
 
+    @abstractmethod
     def get_pokemon_attack_coef(self) -> float:
         """
         Compute a damage multiplier related to the pokemon type.
@@ -33,20 +32,7 @@ class Pokemon:
         Returns :
             float : the multiplier
         """
-        if self._type == "Attacker":
-            multiplier = 1 + (self.speed_current + self.attack_current) / 200
-        elif self._type == "Defender":
-            multiplier = 1 + (self.attack_current + self.defense_current) / 200
-        elif self._type == "All rounder":
-            multiplier = 1 + (self.sp_atk_current + self.sp_def_current) / 200
-        elif self._type == "Speedster":
-            multiplier = 1 + (self.speed_current + self.sp_atk_current) / 200
-        elif self._type == "Supporter":
-            multiplier = 1 + (self.sp_atk_current + self.defense_current) / 200
-        else:
-            raise Exception("unknown type")
-
-        return multiplier
+        pass
 
     def level_up(self) -> None:
         """
